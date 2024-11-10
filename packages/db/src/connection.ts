@@ -1,8 +1,13 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import sqlite3 from 'sqlite3';
 import { open, Database } from 'sqlite';
 import { getLogger } from '@mail/db/lib/logger';
 
 const logger = getLogger('database-connection');
+
+console.log('GOT ENV', process.env.DATABASE_PATH);
 
 export class DatabaseConnection {
   private static instance: Database | null = null;

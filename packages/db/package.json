@@ -1,5 +1,9 @@
 {
   "name": "@mail/db",
   "version": "0.0.0",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "sqlite": "^5.1.1"
+  }
 }
