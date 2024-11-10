@@ -10,7 +10,7 @@ export class AnalyticsClient {
   async createPixel(metadata: EmailMetadata): Promise<PixelConfig> {
     try {
       const response = await fetch(`${this.baseUrl}/api/pixels`, {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },

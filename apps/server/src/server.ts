@@ -10,17 +10,18 @@ import cors from 'cors';
 import helmet from 'helmet';
 
 import logger from './lib/logger';
+import router from './routes';
 
-const port = parseInt(process.env.API_PORT!, 10) || 7000;
-const dev = process.env.NODE_ENV !== 'production';
+const PORT = 3_000;
+const IS_DEV = process.env.NODE_ENV !== 'production';
 
-const app = express();
+const app: express.Application = express();
 
-app.set('trust proxy', !dev);
+app.set('trust proxy', !IS_DEV);
 app.disable('x-powered-by');
 
 // Global middleware
-app.use(morgan(dev ? 'dev' : 'combined'));
+app.use(morgan(IS_DEV ? 'dev' : 'combined'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 app.use(cookieParser());
@@ -31,15 +32,13 @@ app.use(cors());
 app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: dev ? Number.MAX_SAFE_INTEGER : 100, // limit each IP to x requests per windowMs
+    max: IS_DEV ? Number.MAX_SAFE_INTEGER : 100, // limit each IP to x requests per windowMs
     message:
       'Too many requests from this IP, please try again after 15 minutes',
   }),
 );
 
-const router = express.Router();
-
-app.use('/', router);
+app.use('/api', router);
 
 app.use(
   (
@@ -53,7 +52,7 @@ app.use(
   },
 );
 
-app.listen(port, () => {
-  logger.info(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  logger.info(`Server is running on port ${PORT}`);
   logger.info(`Environment: ${process.env.NODE_ENV}`);
 });

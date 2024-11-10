@@ -1,4 +1,5 @@
 import { GMAIL_SELECTORS } from '@mail/extension/consts';
+import { logger } from '@mail/extension/lib/logger';
 
 export class GmailObserver {
   private composeObserver: MutationObserver;
@@ -28,8 +29,10 @@ export class GmailObserver {
         );
         composeWindows.forEach((window) => {
           if (!window.hasAttribute('data-tracking-initialized')) {
-            this.onComposeDetected(window as HTMLElement);
             window.setAttribute('data-tracking-initialized', 'true');
+            setTimeout(() => {
+              this.onComposeDetected(window as HTMLElement);
+            }, 1000);
           }
         });
       }

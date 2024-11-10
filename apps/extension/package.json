@@ -1,10 +1,10 @@
 {
   "name": "@mail/extension",
   "version": "1.0.0",
-  "description": "a post filter for linkedin",
+  "description": "A Chrome extension that tracks emails",
   "main": "index.js",
   "scripts": {
-    "watch": "webpack --config webpack/webpack.dev.js --watch",
+    "dev": "webpack --config webpack/webpack.dev.js --watch",
     "build": "webpack --config webpack/webpack.prod.js",
     "clean": "rimraf dist",
     "style": "prettier --write \"src/**/*.{ts,tsx}\""
@@ -13,7 +13,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gashon/linkedin-filter-extension"
+    "url": "https://github.com/gashon/mail-tracker"
   },
   "dependencies": {
     "react": "^18.2.0",

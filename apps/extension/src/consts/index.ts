@@ -3,5 +3,5 @@ export const GMAIL_SELECTORS = {
   RECIPIENTS_INPUT: 'input[aria-label="To recipients"]',
   SUBJECT_INPUT: 'input[name="subjectbox"]',
   EMAIL_BODY: 'div[aria-label="Message Body"]',
-  COMPOSE_WINDOW: '.nH.Hd',
+  COMPOSE_WINDOW: '.inboxsdk__compose',
 };

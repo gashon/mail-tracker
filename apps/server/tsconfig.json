@@ -2,17 +2,16 @@
   "extends": "@mail/tsconfig/base.json",
   "compilerOptions": {
     "esModuleInterop": true,
-    "moduleResolution": "Node",
     "experimentalDecorators": true,
     "lib": ["ES2019"],
     "module": "CommonJS",
     "outDir": "dist",
     "target": "es6",
-    "typeRoots": ["node_modules/@types", "src/types"],
+    "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
     "paths": {
 	"@mail/server": ["src/*"],
-      "@mail/extesnsion/*": ["../extension/src/*"],
+      "@mail/extension/*": ["../extension/src/*"],
     }
   },
   "include": ["src/**/*"],

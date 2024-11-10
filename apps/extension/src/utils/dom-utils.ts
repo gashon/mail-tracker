@@ -11,15 +11,21 @@ export class EmailTracker {
   }
 
   async handleNewEmail(composeWindow: HTMLElement) {
+    logger.log('Handling new email');
     const sendButton = composeWindow.querySelector(
       GMAIL_SELECTORS.SEND_BUTTON
     ) as HTMLElement;
+    console.log(sendButton);
+    console.log(document.querySelector(GMAIL_SELECTORS.SEND_BUTTON));
     if (!sendButton) return;
+    logger.log('Send button found');
 
     sendButton.addEventListener('click', async (e) => {
       try {
         const metadata = this.getEmailMetadata(composeWindow);
+        logger.log(`Metadata: ${metadata}`);
         const pixelData = await this.api.createPixel(metadata);
+        logger.log(`Pixel data: ${pixelData}`);
         await this.insertTrackingPixel(composeWindow, pixelData);
       } catch (error) {
         console.error('Failed to initialize tracking:', error);
