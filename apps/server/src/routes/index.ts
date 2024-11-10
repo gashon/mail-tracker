@@ -8,22 +8,26 @@ const router: express.IRouter = express.Router();
 
 const db = new PixelTrackingRepository();
 
-db.insert({
+db.upsert({
   pixelId: '123',
   subject: 'Test',
   timestamp: Date.now(),
   to: ['gashon@ghussein.org'],
 });
 
-router.get('/pixels/:id', (req, res) => {
+router.get('/pixels/:id', async (req, res) => {
   console.log('tracking pixel');
+  const pixel = await db.findByPixelId(req.params.id);
+  console.log(pixel);
   res.status(status.OK).send('Pixel tracking');
 });
 
 router.put('/pixels', (req, res) => {
   const body = req.body as EmailMetadata;
   db.insert(body);
-  console.log('created pixel', req.body);
+
+  // TODO(gashon) send notification email on first open
+
   res.status(status.CREATED).json({ pixelId: body.pixelId });
 });
 

@@ -15,6 +15,46 @@ export class PixelTrackingRepository {
     return this.db;
   }
 
+  public async upsert(emailMetadata: EmailMetadata): Promise<string> {
+    const db = await this.getConnection();
+    const now = Date.now();
+
+    try {
+      const { to, subject, timestamp, pixelId } = emailMetadata;
+      const toJson = JSON.stringify(to);
+
+      await db.run(
+        `INSERT INTO pixel_tracking (
+        pixelId, subject, toJson, timestamp, createdAt, updatedAt
+      ) VALUES (?, ?, ?, ?, ?, ?)
+      ON CONFLICT(pixelId) DO UPDATE SET
+        subject = ?,
+        toJson = ?,
+        timestamp = ?,
+        updatedAt = ?`,
+        [
+          // INSERT values
+          pixelId,
+          subject,
+          toJson,
+          timestamp,
+          now,
+          now,
+          // UPDATE values
+          subject,
+          toJson,
+          timestamp,
+          now,
+        ],
+      );
+
+      return pixelId;
+    } catch (error) {
+      logger.error('Failed to upsert pixel tracking record:', error);
+      throw new Error('Failed to upsert pixel tracking record');
+    }
+  }
+
   public async insert(emailMetadata: EmailMetadata): Promise<string> {
     const db = await this.getConnection();
     const now = Date.now();
