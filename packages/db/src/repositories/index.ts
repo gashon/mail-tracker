@@ -141,4 +141,46 @@ export class PixelTrackingRepository {
       throw new Error('Failed to delete pixel tracking record');
     }
   }
+
+  public async countViews(pixelId: string): Promise<number> {
+    const db = await this.getConnection();
+
+    try {
+      const result = await db.get<{ count: number }>(
+        `SELECT COUNT(pv.id) as count
+         FROM pixel_tracking pt
+         LEFT JOIN pixel_view pv ON pt.pixelId = pv.pixelId
+         WHERE pt.pixelId = ?`,
+        [pixelId],
+      );
+
+      return result?.count || 0;
+    } catch (error) {
+      logger.error('Failed to count pixel views:', error);
+      throw new Error('Failed to count pixel views');
+    }
+  }
+
+  public async insertView(pixelId: string): Promise<void> {
+    const db = await this.getConnection();
+    const now = Date.now();
+
+    try {
+      // First verify the pixel exists
+      const pixelExists = await this.findByPixelId(pixelId);
+      if (!pixelExists) {
+        throw new Error('Pixel tracking record not found');
+      }
+
+      await db.run(
+        `INSERT INTO pixel_view (
+          pixelId, createdAt, updatedAt
+        ) VALUES (?, ?, ?)`,
+        [pixelId, now, now],
+      );
+    } catch (error) {
+      logger.error('Failed to insert pixel view:', error);
+      throw new Error('Failed to insert pixel view');
+    }
+  }
 }

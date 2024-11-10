@@ -48,9 +48,21 @@ export class DatabaseConnection {
         createdAt INTEGER NOT NULL,
         updatedAt INTEGER NOT NULL
       );
+
+      CREATE TABLE IF NOT EXISTS pixel_view (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        pixelId TEXT NOT NULL,
+        createdAt INTEGER NOT NULL,
+        updatedAt INTEGER NOT NULL,
+        FOREIGN KEY (pixelId) REFERENCES pixel_tracking(pixelId)
+      );
       
       CREATE INDEX IF NOT EXISTS idx_pixel_tracking_pixelId ON pixel_tracking(pixelId);
       CREATE INDEX IF NOT EXISTS idx_pixel_tracking_timestamp ON pixel_tracking(timestamp);
+
+      CREATE INDEX IF NOT EXISTS idx_pixel_view_pixelId ON pixel_view(pixelId);
+      CREATE INDEX IF NOT EXISTS idx_pixel_view_createdAt ON pixel_view(createdAt);
+      CREATE INDEX IF NOT EXISTS idx_pixel_view_updatedAt ON pixel_view(updatedAt);
     `);
   }
 }
