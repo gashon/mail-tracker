@@ -10,8 +10,9 @@
     "typeRoots": ["node_modules/@types"],
     "baseUrl": ".",
     "paths": {
-	"@mail/server": ["src/*"],
+	"@mail/server/*": ["src/*"],
       "@mail/extension/*": ["../extension/src/*"],
+      "@mail/db/*": ["../../packages/db/src/*"],
     }
   },
   "include": ["src/**/*"],
