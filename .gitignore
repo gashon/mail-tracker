@@ -131,4 +131,4 @@ dist
 
 .turbo
 
-data/pixel.sqlite
+apps/server/data/pixel.sqlite
