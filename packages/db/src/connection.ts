@@ -7,8 +7,6 @@ import { getLogger } from '@mail/db/lib/logger';
 
 const logger = getLogger('database-connection');
 
-console.log('GOT ENV', process.env.DATABASE_PATH);
-
 export class DatabaseConnection {
   private static instance: Database | null = null;
   private static readonly DATABASE_PATH =

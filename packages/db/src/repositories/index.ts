@@ -180,7 +180,6 @@ export class PixelTrackingRepository {
       );
     } catch (error) {
       logger.error('Failed to insert pixel view:', error);
-      throw new Error('Failed to insert pixel view');
     }
   }
 }

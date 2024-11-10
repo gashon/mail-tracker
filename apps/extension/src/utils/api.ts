@@ -7,6 +7,10 @@ export class AnalyticsClient {
     this.baseUrl = baseUrl;
   }
 
+  public get getBaseUrl() {
+    return this.baseUrl;
+  }
+
   async createPixel(metadata: EmailMetadata): Promise<PixelConfig> {
     try {
       const response = await fetch(`${this.baseUrl}/api/pixels`, {

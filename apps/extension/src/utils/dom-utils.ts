@@ -11,29 +11,32 @@ export class EmailTracker {
   }
 
   async handleNewEmail(composeWindow: HTMLElement) {
-    logger.log('Handling new email');
     const sendButton = composeWindow.querySelector(
       GMAIL_SELECTORS.SEND_BUTTON
     ) as HTMLElement;
-    console.log(sendButton);
-    console.log(document.querySelector(GMAIL_SELECTORS.SEND_BUTTON));
     if (!sendButton) return;
-    logger.log('Send button found');
+
+    const pixelId = crypto.randomUUID();
+    const pixelData = {
+      url: `${this.api.getBaseUrl}/api/pixels/${pixelId}`,
+      id: pixelId,
+    };
+    await this.insertTrackingPixel(composeWindow, pixelData);
 
     sendButton.addEventListener('click', async (e) => {
       try {
-        const metadata = this.getEmailMetadata(composeWindow);
-        logger.log(`Metadata: ${metadata}`);
-        const pixelData = await this.api.createPixel(metadata);
-        logger.log(`Pixel data: ${pixelData}`);
-        await this.insertTrackingPixel(composeWindow, pixelData);
+        const metadata = this.getEmailMetadata(pixelId, composeWindow);
+        await this.api.createPixel(metadata);
       } catch (error) {
         console.error('Failed to initialize tracking:', error);
       }
     });
   }
 
-  private getEmailMetadata(composeWindow: HTMLElement): EmailMetadata {
+  private getEmailMetadata(
+    pixelId: string,
+    composeWindow: HTMLElement
+  ): EmailMetadata {
     const recipients = this.getRecipients(composeWindow);
     const subject = this.getSubject(composeWindow);
 
@@ -41,7 +44,7 @@ export class EmailTracker {
       to: recipients,
       subject,
       timestamp: Date.now(),
-      pixelId: crypto.randomUUID(),
+      pixelId,
     };
   }
 
@@ -65,7 +68,6 @@ export class EmailTracker {
   ) {
     const bodyDiv = composeWindow.querySelector(GMAIL_SELECTORS.EMAIL_BODY);
     if (!bodyDiv) return;
-
     const img = document.createElement('img');
     img.src = pixelData.url;
     img.style.position = 'absolute';
