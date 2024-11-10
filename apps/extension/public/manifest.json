@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
 
-  "name": "Linkedin Post Filter",
-  "description": "Chrome Extension, Linkedin",
+  "name": "MailTracker",
+  "description": "Chrome Extension, Gmail Tracker, Pixel Tracker",
   "version": "1.0",
 
   "options_ui": {
@@ -16,7 +16,7 @@
 
   "content_scripts": [
     {
-      "matches": ["https://www.linkedin.com/*"],
+      "matches": ["https://mail.google.com/mail/u/0/"],
       "js": ["js/vendor.js", "js/content_script.js"]
     }
   ],
@@ -24,8 +24,6 @@
   "background": {
     "service_worker": "js/background.js"
   },
-
-  "permissions": ["storage", "tabs"],
-
+  "permissions": ["activeTab"],
   "host_permissions": ["<all_urls>"]
 }

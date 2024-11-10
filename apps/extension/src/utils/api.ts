@@ -1,23 +1,34 @@
-import { UserSettings } from "@/types";
+import type { EmailMetadata, PixelConfig } from '@mail/extension/types';
 
-export const classifyElement = async (
-  element: HTMLElement,
-  settings: UserSettings
-): Promise<"block" | "permit"> => {
-  const textContent = element.innerText;
+export class AnalyticsClient {
+  private baseUrl: string;
 
-  const response = await fetch("https://api.llm-service.com/classify", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${settings.apiKey}`,
-    },
-    body: JSON.stringify({
-      text: textContent,
-      filters: settings.filters,
-    }),
-  });
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
-  const result = await response.json();
-  return result.classification as "block" | "permit";
-};
+  async createPixel(metadata: EmailMetadata): Promise<PixelConfig> {
+    try {
+      const response = await fetch(`${this.baseUrl}/api/pixels`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to create pixel: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      return {
+        url: `${this.baseUrl}/api/pixels/${data.pixelId}`,
+        id: data.pixelId,
+      };
+    } catch (error) {
+      console.error('Error creating pixel:', error);
+      throw error;
+    }
+  }
+}

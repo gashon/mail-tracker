@@ -1,29 +1,13 @@
-import {
-  PromotedActivitiesFilterSingleton,
-  LanguageModelFilterSingleton,
-} from "@/utils/dom-utils";
-import { LanguageModelFilter, RequestMessage } from "@/consts";
+import { AnalyticsClient } from '@mail/extension/utils/api';
+import { EmailTracker } from '@mail/extension/utils/dom-utils';
+import { GmailObserver } from '@mail/extension/utils/observers';
 
-const promotedActivitiesFilter = new PromotedActivitiesFilterSingleton();
-promotedActivitiesFilter.init();
+const API_BASE_URL = 'https://your-analytics-api.com';
 
-const languageModelFilter = new LanguageModelFilterSingleton(
-  // TODO support reading and writing options to storage for persistence
-  {
-    apiKey: "TODO",
-    filters: [LanguageModelFilter.RECRUITING_FILTER],
-    userDefinedFilters: ["TODO"],
-  }
-);
-
-chrome.runtime.onMessage.addListener((message, _, sendResponse) => {
-  if (message.type === RequestMessage.PROMOTION_FILTER_COUNT) {
-    const count = promotedActivitiesFilter.getRemovedCount();
-    sendResponse({ count });
-    return true;
-  } else if (message.type === RequestMessage.LANGUAGE_MODEL_FILTER) {
-    const count = languageModelFilter.getRemovedCount();
-    sendResponse({ count });
-    return true;
-  }
+const api = new AnalyticsClient(API_BASE_URL);
+const emailTracker = new EmailTracker(api);
+const observer = new GmailObserver((composeWindow) => {
+  emailTracker.handleNewEmail(composeWindow);
 });
+
+observer.startObserving();

@@ -1,25 +1,24 @@
-const webpack = require("webpack");
-const path = require("path");
-const CopyPlugin = require("copy-webpack-plugin");
-const srcDir = path.join(__dirname, "..", "src");
-const TsconfigPathsPlugin = require("tsconfig-paths-webpack-plugin");
+const webpack = require('webpack');
+const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
+const srcDir = path.join(__dirname, '..', 'src');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
 module.exports = {
   entry: {
-    popup: path.join(srcDir, "popup.tsx"),
-    options: path.join(srcDir, "options.tsx"),
-    background: path.join(srcDir, "background.ts"),
-    content_script: path.join(srcDir, "content_script.tsx"),
+    popup: path.join(srcDir, 'popup.tsx'),
+    background: path.join(srcDir, 'background.ts'),
+    content_script: path.join(srcDir, 'content_script.tsx'),
   },
   output: {
-    path: path.join(__dirname, "../dist/js"),
-    filename: "[name].js",
+    path: path.join(__dirname, '../dist/js'),
+    filename: '[name].js',
   },
   optimization: {
     splitChunks: {
-      name: "vendor",
+      name: 'vendor',
       chunks(chunk) {
-        return chunk.name !== "background";
+        return chunk.name !== 'background';
       },
     },
   },
@@ -27,21 +26,21 @@ module.exports = {
     rules: [
       {
         test: /\.tsx?$/,
-        use: "ts-loader",
+        use: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: [".ts", ".tsx", ".js"],
+    extensions: ['.ts', '.tsx', '.js'],
     plugins: [new TsconfigPathsPlugin()],
     alias: {
-      "@": path.resolve(__dirname, "../", "src"),
+      '@': path.resolve(__dirname, '../', 'src'),
     },
   },
   plugins: [
     new CopyPlugin({
-      patterns: [{ from: ".", to: "../", context: "public" }],
+      patterns: [{ from: '.', to: '../', context: 'public' }],
       options: {},
     }),
   ],

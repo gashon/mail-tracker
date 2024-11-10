@@ -1,42 +1,39 @@
-import React from "react";
-import { createRoot } from "react-dom/client";
-import { useRemovedCount } from "@/hooks/use-removed-count";
+import React from 'react';
+import { createRoot } from 'react-dom/client';
 
 const Popup = () => {
-  const count = useRemovedCount();
-
   return (
     <div style={styles.container}>
       <h1 style={styles.title}>LinkedIn Filter</h1>
-      <p style={styles.countText}>Removed {count} promoted post</p>
+      <p style={styles.countText}>post</p>
     </div>
   );
 };
 
 const styles: { [key: string]: React.CSSProperties } = {
   container: {
-    width: "300px",
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    borderRadius: "12px",
-    boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-    textAlign: "center",
+    width: '300px',
+    padding: '20px',
+    backgroundColor: '#ffffff',
+    borderRadius: '12px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    textAlign: 'center',
     fontFamily: "'Inter', sans-serif",
   },
   title: {
-    fontSize: "20px",
-    color: "#333333",
-    margin: "0 0 10px",
-    fontWeight: "500",
+    fontSize: '20px',
+    color: '#333333',
+    margin: '0 0 10px',
+    fontWeight: '500',
   },
   countText: {
-    fontSize: "16px",
-    color: "#666666",
-    margin: "0",
+    fontSize: '16px',
+    color: '#666666',
+    margin: '0',
   },
 };
 
-const root = createRoot(document.getElementById("root")!);
+const root = createRoot(document.getElementById('root')!);
 
 root.render(
   <React.StrictMode>

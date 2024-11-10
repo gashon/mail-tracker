@@ -2,19 +2,21 @@
     "compilerOptions": {
         "strict": true,
         "target": "es6",
-        "moduleResolution": "bundler",
-        "module": "ES6",
+        "moduleResolution": "node",
+        "module": "commonjs",
         "esModuleInterop": true,
-        "sourceMap": false,
+        "sourceMap": true,
         "rootDir": "src",
         "outDir": "dist/js",
         "noEmitOnError": true,
         "jsx": "react",
         "typeRoots": [ "node_modules/@types" ],
-	"baseUrl": ".",
-	"paths": {
-	     "@mail/extension": ["src/*"],
-	      "@mail/server/*": ["../server/src/*"],
-	}
-    }
+        "baseUrl": ".",
+        "paths": {
+            "@mail/extension/*": ["src/*"],
+            "@mail/server/*": ["../server/src/*"]
+        }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }
